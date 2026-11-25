@@ -34,7 +34,7 @@ export const VIDEOS: Record<VideoId, VideoInfo> = {
     tabLabel: 'O que é o Hall',
     title: 'O que é o Hall da Fama',
     description: 'Entenda como funciona o programa: entrada, permanência, cupons, sorteios, viagens e presentes.',
-    url: (import.meta.env.VITE_VIDEO_HALL_URL ?? '').trim() || /* fallbackUrl: */ '',
+    url: (import.meta.env.VITE_VIDEO_HALL_URL ?? '').trim() || /* fallbackUrl: */ 'https://youtu.be/eWxyRfzoGvw',
   },
 };
 
