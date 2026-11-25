@@ -54,18 +54,18 @@ function EmailLogin() {
               value={email} onChange={(e) => setEmail(e.target.value)} placeholder="voce@email.com" />
           </div>
           <button className="btn block" disabled={busy || !email}>{busy ? 'Enviando…' : <>Receber código <Mail size={18} aria-hidden /></>}</button>
-          <p className="tiny muted">Você vai receber um código de 6 dígitos. Funciona em qualquer navegador, inclusive dentro do WhatsApp.</p>
+          <p className="tiny muted">Você vai receber um código de 8 dígitos. Funciona em qualquer navegador, inclusive dentro do WhatsApp.</p>
         </form>
       ) : (
         <form onSubmit={submitCode} className="page" style={{ gap: 12 }}>
           <p className="small muted">Enviamos um código para <b style={{ color: '#fff' }}>{email}</b>. Ele vale por 15 minutos.</p>
           <div className="field">
-            <label htmlFor="code">Código de 6 dígitos</label>
-            <input id="code" className="input" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{6}" maxLength={6} required
-              value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} placeholder="000000"
+            <label htmlFor="code">Código de 8 dígitos</label>
+            <input id="code" className="input" inputMode="numeric" autoComplete="one-time-code" pattern="[0-9]{8}" maxLength={8} required
+              value={code} onChange={(e) => setCode(e.target.value.replace(/\D/g, ''))} placeholder="00000000"
               style={{ letterSpacing: '0.4em', fontSize: 22, textAlign: 'center' }} />
           </div>
-          <button className="btn block" disabled={busy || code.length !== 6}>{busy ? 'Entrando…' : <>Entrar <ArrowRight size={18} aria-hidden /></>}</button>
+          <button className="btn block" disabled={busy || code.length !== 8}>{busy ? 'Entrando…' : <>Entrar <ArrowRight size={18} aria-hidden /></>}</button>
           <button type="button" className="btn secondary block" onClick={() => { setStep('email'); setCode(''); }}>Usar outro e-mail</button>
         </form>
       )}
