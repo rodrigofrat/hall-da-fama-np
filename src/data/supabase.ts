@@ -35,16 +35,32 @@ export class SupabaseData implements PortalData {
   readonly mode = 'supabase' as const;
   constructor(private db: SupabaseClient = getSupabase()) {}
 
-  async getMe() {
+  async listBrowsableCreators() {
+    const canBrowse = check(await this.db.rpc('can_browse_creators'), 'permissão de consulta');
+    if (!canBrowse) return null;
+    const creators: { creator_id: string; handle: string }[] = [];
+    const pageSize = 500;
+    for (let start = 0; ; start += pageSize) {
+      const page = check(await this.db.from('creators').select('creator_id, handle')
+        .order('creator_id').range(start, start + pageSize - 1), 'criadores');
+      creators.push(...page);
+      if (page.length < pageSize) break;
+    }
+    return creators.sort((a, b) => a.handle.localeCompare(b.handle, 'pt-BR'));
+  }
+
+  async getMe(viewedCreatorId?: string) {
     const db = this.db;
     const [link, staff, program] = await Promise.all([
-      db.from('account_links').select('active, ranking_authorized, history_authorized').maybeSingle(),
+      db.from('account_links').select('creator_id, active, ranking_authorized, history_authorized').maybeSingle(),
       db.from('staff').select('user_id').maybeSingle(),
       db.from('program_state').select('analysis_month, last_closed_month, draw_month, program_start, synced_at').maybeSingle(),
     ]);
-    const l = check(link, 'conta') as { active: boolean; ranking_authorized: boolean; history_authorized: boolean } | null;
+    const ownLink = check(link, 'conta') as { creator_id: string; active: boolean; ranking_authorized: boolean; history_authorized: boolean } | null;
+    const creatorId = viewedCreatorId ?? ownLink?.creator_id;
+    const l = viewedCreatorId ? { active: true, ranking_authorized: true } : ownLink;
     const isStaff = !!check(staff, 'equipe');
-    if (!l || (!l.active && !l.history_authorized)) {
+    if (!creatorId || !l || (!l.active && !ownLink?.history_authorized)) {
       if (isStaff) return this.staffOnly(check(program, 'programa') as ProgramRow | null);
       throw new AccessError('Sua conta ainda não está vinculada a um criador do Hall da Fama. Fale com a equipe da NP.');
     }
@@ -52,19 +68,21 @@ export class SupabaseData implements PortalData {
     if (!p) throw new Error('Os dados do Hall ainda não foram publicados. Tente novamente mais tarde.');
 
     const [creator, cycles, balances, monthly, pip, deliveries, next] = await Promise.all([
-      db.from('creators').select('creator_id, handle, display_name, current_entry_month, link_status, needs_group_confirmation').maybeSingle(),
+      db.from('creators').select('creator_id, handle, display_name, current_entry_month, link_status, needs_group_confirmation').eq('creator_id', creatorId).maybeSingle(),
       db.from('cycles').select('cycle_id, label, draw_month, state, ranking_metric'),
-      db.from('cycle_balances').select('creator_id, cycle_id, accumulated, eligible, entry_bonus, participation, number_range'),
-      db.from('monthly_coupons').select('creator_id, month, vinculo_entry, coupons, closed').order('month', { ascending: false }).limit(60),
-      db.from('pip_status').select('creator_id, status, reference_month, recovery_month, result, last_confirmed_status, last_confirmed_month').maybeSingle(),
-      db.from('gift_deliveries').select('creator_id, vinculo_entry, reference, kind, delivered_on, coins').order('delivered_on').limit(200),
-      db.from('gift_next').select('creator_id, vinculo_entry, reference, kind, situation, situation_raw, coins, forecast_month, forecast_date').maybeSingle(),
+      db.from('cycle_balances').select('creator_id, cycle_id, accumulated, eligible, entry_bonus, participation, number_range').eq('creator_id', creatorId),
+      db.from('monthly_coupons').select('creator_id, month, vinculo_entry, coupons, closed').eq('creator_id', creatorId).order('month', { ascending: false }).limit(60),
+      db.from('pip_status').select('creator_id, status, reference_month, recovery_month, result, last_confirmed_status, last_confirmed_month').eq('creator_id', creatorId).maybeSingle(),
+      db.from('gift_deliveries').select('creator_id, vinculo_entry, reference, kind, delivered_on, coins').eq('creator_id', creatorId).order('delivered_on').limit(200),
+      db.from('gift_next').select('creator_id, vinculo_entry, reference, kind, situation, situation_raw, coins, forecast_month, forecast_date').eq('creator_id', creatorId).maybeSingle(),
     ]);
+    const selectedCreator = check(creator, 'perfil') as CreatorRow | null;
+    if (viewedCreatorId && !selectedCreator) throw new AccessError('Este painel está indisponível.');
     return mapMe({
       program: mapProgram(p, { isDemo: false, syncedAt: p.synced_at ?? null, staleWarning: staleness(p.synced_at) }),
       link: l,
       isStaff,
-      creator: check(creator, 'perfil') as CreatorRow | null,
+      creator: selectedCreator,
       cycles: check(cycles, 'ciclos') as CycleRow[],
       balances: check(balances, 'cupons') as BalanceRow[],
       monthly: check(monthly, 'histórico') as MonthlyRow[],
