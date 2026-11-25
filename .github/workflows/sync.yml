@@ -10,35 +10,56 @@ on:
         default: false
 permissions:
   contents: read
+  id-token: write
 concurrency:
   group: sync-planilha
   cancel-in-progress: false
 jobs:
   sync:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     env:
-      GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
       HALL_SPREADSHEET_ID: ${{ secrets.HALL_SPREADSHEET_ID }}
       PORTAL_AUX_SPREADSHEET_ID: ${{ secrets.PORTAL_AUX_SPREADSHEET_ID }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
     steps:
+      - name: Conferir configuração
+        id: config
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ -n "$HALL_SPREADSHEET_ID" ] && { [ "$DRY_RUN" = true ] || { [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_SECRET_KEY" ]; }; }; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'Configuração de produção pendente. Nenhum dado foi lido.'
+            if [ "$GITHUB_EVENT_NAME" = workflow_dispatch ]; then exit 1; fi
+          fi
       - uses: actions/checkout@v4
+        if: steps.config.outputs.ready == 'true'
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v4
+        if: steps.config.outputs.ready == 'true'
         with:
           node-version: 22
           cache: npm
       - run: npm ci
+        if: steps.config.outputs.ready == 'true'
+      - name: Autenticar no Google sem chave permanente
+        if: steps.config.outputs.ready == 'true'
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: daring-agent-515819-p0
+          workload_identity_provider: projects/315525433952/locations/global/workloadIdentityPools/hall-np-github/providers/github-actions
+          service_account: hall-np-sheets-reader@daring-agent-515819-p0.iam.gserviceaccount.com
       - name: Sincronizar
+        if: steps.config.outputs.ready == 'true'
         env:
           SYNC_TRIGGER: ${{ github.event_name == 'schedule' && 'schedule' || 'manual' }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
-          if [ "$SYNC_TRIGGER" = schedule ] && { [ -z "$GOOGLE_SERVICE_ACCOUNT_JSON" ] || [ -z "$HALL_SPREADSHEET_ID" ] || [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_SECRET_KEY" ]; }; then
-            echo 'Configuração de produção pendente. Nenhum dado foi lido.'
-          elif [ "$DRY_RUN" = true ]; then
-            npm run sync:dry
-          else
-            npm run sync
-          fi
+          # Usa a configuração de identidade temporária no formato esperado pelo leitor.
+          export GOOGLE_SERVICE_ACCOUNT_JSON="$(cat "$GOOGLE_APPLICATION_CREDENTIALS")"
+          if [ "$DRY_RUN" = true ]; then npm run sync:dry; else npm run sync; fi
