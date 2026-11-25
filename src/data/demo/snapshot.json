@@ -1,7 +1,7 @@
 {
  "_aviso": "DADOS FICTÍCIOS DE DEMONSTRAÇÃO — gerados por scripts/gen-demo.ts",
  "synced_at": "2026-11-25T12:00:00.000Z",
- "hash": "a2701a2f0d71628b26bf5933f99a1434872f3a84908f4e9cd9a21ac169acd372",
+ "hash": "6073375982a92605de1833eee4045d2bf150da71d9f18daff251588311823463",
  "payload": {
   "program_state": {
    "analysis_month": "2026-11",
@@ -39,7 +39,8 @@
     "display_name": null,
     "current_entry_month": "2026-05",
     "link_status": "ativo",
-    "needs_group_confirmation": false
+    "needs_group_confirmation": false,
+    "in_current_hall": true
    },
    {
     "creator_id": "demo_0002",
@@ -47,7 +48,8 @@
     "display_name": null,
     "current_entry_month": "2026-04",
     "link_status": "ativo",
-    "needs_group_confirmation": false
+    "needs_group_confirmation": false,
+    "in_current_hall": true
    },
    {
     "creator_id": "demo_0003",
@@ -55,7 +57,8 @@
     "display_name": null,
     "current_entry_month": "2026-05",
     "link_status": "ativo",
-    "needs_group_confirmation": false
+    "needs_group_confirmation": false,
+    "in_current_hall": true
    },
    {
     "creator_id": "demo_0004",
@@ -63,7 +66,8 @@
     "display_name": null,
     "current_entry_month": "2026-09",
     "link_status": "ativo",
-    "needs_group_confirmation": false
+    "needs_group_confirmation": false,
+    "in_current_hall": true
    },
    {
     "creator_id": "demo_0005",
@@ -71,7 +75,8 @@
     "display_name": null,
     "current_entry_month": "2026-07",
     "link_status": "ativo",
-    "needs_group_confirmation": false
+    "needs_group_confirmation": false,
+    "in_current_hall": true
    },
    {
     "creator_id": "demo_0006",
@@ -79,7 +84,8 @@
     "display_name": null,
     "current_entry_month": "2026-06",
     "link_status": "ativo",
-    "needs_group_confirmation": false
+    "needs_group_confirmation": false,
+    "in_current_hall": true
    },
    {
     "creator_id": "demo_0007",
@@ -87,7 +93,8 @@
     "display_name": null,
     "current_entry_month": "2026-08",
     "link_status": "ativo",
-    "needs_group_confirmation": false
+    "needs_group_confirmation": false,
+    "in_current_hall": true
    },
    {
     "creator_id": "demo_0008",
@@ -95,7 +102,8 @@
     "display_name": null,
     "current_entry_month": "2026-10",
     "link_status": "em_recuperacao",
-    "needs_group_confirmation": false
+    "needs_group_confirmation": false,
+    "in_current_hall": true
    },
    {
     "creator_id": "demo_0009",
@@ -103,7 +111,8 @@
     "display_name": null,
     "current_entry_month": "2026-04",
     "link_status": "em_recuperacao",
-    "needs_group_confirmation": false
+    "needs_group_confirmation": false,
+    "in_current_hall": true
    },
    {
     "creator_id": "demo_0010",
@@ -111,7 +120,8 @@
     "display_name": null,
     "current_entry_month": "2026-11",
     "link_status": "aguardando_fechamento",
-    "needs_group_confirmation": true
+    "needs_group_confirmation": true,
+    "in_current_hall": true
    }
   ],
   "cycle_balances": [
