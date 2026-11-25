@@ -14,6 +14,8 @@ const U = {
   semVinculo: '33333333-3333-3333-3333-333333333333',
   antiga: '44444444-4444-4444-4444-444444444444',
   equipe: '55555555-5555-5555-5555-555555555555',
+  convidado: '66666666-6666-6666-6666-666666666666',
+  administrador: '77777777-7777-7777-7777-777777777777',
 };
 const ID = { ana: '7000000000000000001', bia: '7000000000000000002', antiga: '7000000000000000003' };
 
@@ -67,11 +69,12 @@ beforeAll(async () => {
   const dir = join(root, 'supabase/migrations');
   for (const f of readdirSync(dir).sort()) await db.exec(readFileSync(join(dir, f), 'utf8'));
   await db.exec(`
-    insert into auth.users (id) values ('${U.ana}'), ('${U.bia}'), ('${U.semVinculo}'), ('${U.antiga}'), ('${U.equipe}');
+    insert into auth.users (id) values ('${U.ana}'), ('${U.bia}'), ('${U.semVinculo}'), ('${U.antiga}'), ('${U.equipe}'), ('${U.convidado}'), ('${U.administrador}');
     insert into public.account_links (user_id, creator_id) values ('${U.ana}', '${ID.ana}'), ('${U.bia}', '${ID.bia}');
     insert into public.account_links (user_id, creator_id, active, ranking_authorized, history_authorized)
       values ('${U.antiga}', '${ID.antiga}', false, false, true);
-    insert into public.staff (user_id) values ('${U.equipe}');
+    insert into public.staff (user_id) values ('${U.equipe}'), ('${U.administrador}');
+    insert into public.portal_viewers (user_id) values ('${U.convidado}'), ('${U.administrador}');
   `);
   await loadSnapshot('v1');
 }, 60000);
@@ -136,6 +139,21 @@ describe('calendário publicado e administração', () => {
   });
   it('criador não executa funções do sincronizador', async () => {
     await expect(as('authenticated', U.ana, `select public.sync_begin('x')`)).rejects.toThrow(/permission denied/);
+  });
+});
+
+describe('consulta de painéis por convidados e administradores', () => {
+  it('permite ao convidado consultar criadores e ranking, sem acesso administrativo ou de escrita', async () => {
+    expect(await as('authenticated', U.convidado, 'select creator_id from public.creators')).toHaveLength(3);
+    expect(await as('authenticated', U.convidado, "select * from public.get_ranking('2026-T4')")).toHaveLength(2);
+    expect(await as('authenticated', U.convidado, 'select event_id from public.calendar_events')).toEqual([{ event_id: 'pub' }]);
+    expect(await as('authenticated', U.convidado, 'select * from public.sync_runs')).toHaveLength(0);
+    await expect(as('authenticated', U.convidado, "update public.pip_status set status = 'ativo'")).rejects.toThrow(/permission denied/);
+  });
+
+  it('combina consulta de criadores e acesso administrativo somente com as duas permissões', async () => {
+    expect(await as('authenticated', U.administrador, 'select creator_id from public.creators')).toHaveLength(3);
+    expect((await as('authenticated', U.administrador, 'select * from public.sync_runs')).length).toBeGreaterThan(0);
   });
 });
 
