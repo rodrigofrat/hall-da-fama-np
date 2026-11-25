@@ -18,6 +18,14 @@ export function PipPage() {
   return (
     <div className="page">
       <PageHead eyebrow="Área pessoal" title="Participação e PIP">Informações visíveis somente para você.</PageHead>
+      <Card title="O que é o PIP?" labelledBy="pip-explainer">
+        <p className="small muted">
+          PIP significa <b>Performance Improvement Plan</b> (Plano de Melhoria de Desempenho).
+          No Hall da Fama, é o mês de recuperação. Se você não atingir a meta de permanência,
+          tem um mês para cumprir as metas de recuperação e continuar no programa.
+        </p>
+      </Card>
+
       <section className="card hero fade-in" aria-labelledby="pip-status">
         <div className="card-head"><h2 id="pip-status"><HeartPulse aria-hidden /> Seu status</h2></div>
         <LinkStatusPill status={view.headline} />
