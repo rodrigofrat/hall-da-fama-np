@@ -14,7 +14,7 @@ const MAIN = [
 
 export function Shell({ children }: { children: ReactNode }) {
   const { mode } = useAuth();
-  const { me } = useMe();
+  const { me, browsableCreators, viewedCreatorId, viewCreator } = useMe();
   const isStaff = !!me.data?.profile.isStaff;
   const handle = me.data?.profile.handle;
 
@@ -46,7 +46,20 @@ export function Shell({ children }: { children: ReactNode }) {
         {isStaff && <NavLink to="/admin" className="nav-item"><Settings2 aria-hidden /> Administração</NavLink>}
       </nav>
 
-      <main id="conteudo" className="main" tabIndex={-1}>{children}</main>
+      <main id="conteudo" className="main" tabIndex={-1}>
+        {!!browsableCreators?.length && (
+          <div className="card field" style={{ marginBottom: 16 }}>
+            <label htmlFor="viewed-creator">Consultar painel de um criador</label>
+            <select id="viewed-creator" className="select" value={viewedCreatorId}
+              onChange={(event) => viewCreator(event.target.value)}>
+              {browsableCreators.map((creator) => (
+                <option key={creator.creator_id} value={creator.creator_id}>{creator.handle}</option>
+              ))}
+            </select>
+          </div>
+        )}
+        {children}
+      </main>
 
       <nav className="bottom-nav" aria-label="Navegação principal">
         {MAIN.map((n) => (
