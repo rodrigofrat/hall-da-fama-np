@@ -16,7 +16,7 @@ import { Issues, type Cell, type Grid, type Issue, type Workbook } from './workb
 export interface SnapshotPayload {
   program_state: { analysis_month: string | null; last_closed_month: string | null; draw_month: string | null; program_start: string | null };
   cycles: { cycle_id: string; label: string; draw_month: string; state: string; ranking_metric: string }[];
-  creators: { creator_id: string; handle: string; display_name: string | null; current_entry_month: string | null; link_status: string; needs_group_confirmation: boolean }[];
+  creators: { creator_id: string; handle: string; display_name: string | null; current_entry_month: string | null; link_status: string; needs_group_confirmation: boolean; in_current_hall: boolean }[];
   cycle_balances: { creator_id: string; cycle_id: string; accumulated: number | null; eligible: number | null; entry_bonus: number; participation: string; number_range: string | null }[];
   monthly_coupons: { creator_id: string; month: string; vinculo_entry: string | null; coupons: number | null; closed: boolean }[];
   pip_status: { creator_id: string; status: string; reference_month: string | null; recovery_month: string | null; result: string | null; last_confirmed_status: string | null; last_confirmed_month: string | null }[];
@@ -142,7 +142,7 @@ export function buildSnapshot(main: Workbook, aux: Workbook | null): BuildResult
   }
 
   // ---- Hall da Fama
-  const creators = new Map<string, SnapshotPayload['creators'][number] & { cycleCoupons: number | null }>();
+  const creators = new Map<string, Omit<SnapshotPayload['creators'][number], 'in_current_hall'> & { cycleCoupons: number | null }>();
   if (checkHeaders(MAIN_TABS.hall, T[MAIN_TABS.hall.tab], issues)) {
     for (const { cells, n } of rowsOf(T[MAIN_TABS.hall.tab], MAIN_TABS.hall.headerRow)) {
       if (blank(cells)) continue;
@@ -439,7 +439,9 @@ export function buildSnapshot(main: Workbook, aux: Workbook | null): BuildResult
   const payload: SnapshotPayload = {
     program_state: { analysis_month: analysisMonth, last_closed_month: lastClosedMonth, draw_month: drawMonth, program_start: programStart },
     cycles,
-    creators: [...creators.values()].map(({ cycleCoupons: _c, ...rest }) => rest),
+    creators: [...creators.values()].map(({ cycleCoupons: _c, ...rest }) => ({
+      ...rest, in_current_hall: currentHallIds.has(rest.creator_id),
+    })),
     cycle_balances: [...balances.values()],
     monthly_coupons,
     pip_status,
