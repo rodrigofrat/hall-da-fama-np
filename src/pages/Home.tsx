@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { balanceFor, currentCycle } from '../app/selectors';
 import { useCalendar, useMe, useRanking } from '../app/data';
 import { cycleById, isCyclePartial } from '../domain/cycles';
-import { eventTiming, nextDraw } from '../domain/calendar';
+import { eventTiming, nextDraw, nextDrawSentence } from '../domain/calendar';
 import { monthLabel, monthLabelCap, todayInSaoPaulo } from '../domain/dates';
 import { forecastText, GIFT_KIND_LABEL } from '../domain/gifts';
 import { LINK_STATUS_LABEL, PARTICIPATION_HELP, resolvePipDisplay } from '../domain/status';
@@ -60,6 +60,7 @@ function Home({ me }: { me: MeData }) {
               <>
                 <p className="countdown">{drawTiming.kind === 'mes' && draw.expectedMonth ? monthLabelCap(draw.expectedMonth) : drawTiming.headline}</p>
                 <p className="small muted">{drawTiming.kind === 'mes' ? 'Dia a confirmar pela agência' : drawTiming.whenText}</p>
+                <span className="sr-only">{nextDrawSentence(draw, today)}</span>
                 {bal && <p className="small muted">{PARTICIPATION_HELP[bal.participation]}</p>}
               </>
             ) : <p className="muted">{cal.error ? 'Calendário indisponível no momento.' : 'Data a confirmar pela agência.'}</p>}
