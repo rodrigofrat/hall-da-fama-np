@@ -42,7 +42,7 @@ export class SupabaseData implements PortalData {
     const pageSize = 500;
     for (let start = 0; ; start += pageSize) {
       const page = check(await this.db.from('creators').select('creator_id, handle')
-        .order('creator_id').range(start, start + pageSize - 1), 'criadores');
+        .eq('in_current_hall', true).order('creator_id').range(start, start + pageSize - 1), 'criadores');
       creators.push(...page);
       if (page.length < pageSize) break;
     }
