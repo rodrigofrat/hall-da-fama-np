@@ -21,7 +21,9 @@ export function PipPage() {
       <section className="card hero fade-in" aria-labelledby="pip-status">
         <div className="card-head"><h2 id="pip-status"><HeartPulse aria-hidden /> Seu status</h2></div>
         <LinkStatusPill status={view.headline} />
-        <p>{LINK_STATUS_HELP[view.headline]}</p>
+        <p>{view.headline === 'ativo'
+          ? 'Parabéns! Você cumpriu a meta de permanência e não está no mês de recuperação.'
+          : LINK_STATUS_HELP[view.headline]}</p>
         <div className="stat-row">
           <div className="stat"><span className="label">Mês de referência</span><span className="value">{view.headlineMonth ? monthLabelCap(view.headlineMonth) : 'A confirmar'}</span></div>
           {pip?.recoveryMonth && inRecovery && (
@@ -31,22 +33,24 @@ export function PipPage() {
         {view.pendingCurrent && <Notice tone="warn" icon={Clock}>O status do mês atual aguarda fechamento. Até lá, vale o último status confirmado acima.</Notice>}
       </section>
 
-      <Card title="Metas para sair da recuperação" icon={Flag} labelledBy="metas-title">
-        <p className="small muted">As três metas precisam ser cumpridas <b style={{ color: '#fff' }}>no mesmo mês</b>{pip?.recoveryMonth && inRecovery ? ` (${monthLabel(pip.recoveryMonth)})` : ''}:</p>
-        <div className="goals">
-          {PIP_GOALS.map((g) => {
-            const I = GOAL_ICON[g.key];
-            return (
-              <div key={g.key} className="goal">
-                <I aria-hidden size={22} color="var(--np-pink)" style={{ justifySelf: 'center' }} />
-                <span className="n">{g.value}</span>
-                <span className="small muted">{g.unit}</span>
-              </div>
-            );
-          })}
-        </div>
-        <p className="tiny muted">O resultado oficial é publicado pela NP após o fechamento do mês.</p>
-      </Card>
+      {inRecovery && (
+        <Card title="Metas para sair da recuperação" icon={Flag} labelledBy="metas-title">
+          <p className="small muted">As três metas precisam ser cumpridas <b style={{ color: '#fff' }}>no mesmo mês</b>{pip?.recoveryMonth ? ` (${monthLabel(pip.recoveryMonth)})` : ''}:</p>
+          <div className="goals">
+            {PIP_GOALS.map((g) => {
+              const I = GOAL_ICON[g.key];
+              return (
+                <div key={g.key} className="goal">
+                  <I aria-hidden size={22} color="var(--np-pink)" style={{ justifySelf: 'center' }} />
+                  <span className="n">{g.value}</span>
+                  <span className="small muted">{g.unit}</span>
+                </div>
+              );
+            })}
+          </div>
+          <p className="tiny muted">O resultado oficial é publicado pela NP após o fechamento do mês.</p>
+        </Card>
+      )}
 
       <Card title="Resultado publicado" labelledBy="res-pip">
         {pip?.result ? <p><b>{pip.result}</b>{pip.recoveryMonth ? <span className="muted"> · recuperação de {monthLabel(pip.recoveryMonth)}</span> : null}</p>
