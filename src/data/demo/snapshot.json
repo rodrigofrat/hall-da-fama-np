@@ -1,0 +1,1243 @@
+{
+ "_aviso": "DADOS FICTÍCIOS DE DEMONSTRAÇÃO — gerados por scripts/gen-demo.ts",
+ "synced_at": "2026-11-25T12:00:00.000Z",
+ "hash": "a2701a2f0d71628b26bf5933f99a1434872f3a84908f4e9cd9a21ac169acd372",
+ "payload": {
+  "program_state": {
+   "analysis_month": "2026-11",
+   "last_closed_month": "2026-10",
+   "draw_month": "2027-01",
+   "program_start": "2026-04"
+  },
+  "cycles": [
+   {
+    "cycle_id": "2026-T2",
+    "label": "Abr–Jun 2026",
+    "draw_month": "2026-07",
+    "state": "arquivado",
+    "ranking_metric": "acumulado"
+   },
+   {
+    "cycle_id": "2026-T3",
+    "label": "Jul–Set 2026",
+    "draw_month": "2026-10",
+    "state": "arquivado",
+    "ranking_metric": "acumulado"
+   },
+   {
+    "cycle_id": "2026-T4",
+    "label": "Out–Dez 2026",
+    "draw_month": "2027-01",
+    "state": "parcial",
+    "ranking_metric": "acumulado"
+   }
+  ],
+  "creators": [
+   {
+    "creator_id": "demo_0001",
+    "handle": "@luna.demo",
+    "display_name": null,
+    "current_entry_month": "2026-05",
+    "link_status": "ativo",
+    "needs_group_confirmation": false
+   },
+   {
+    "creator_id": "demo_0002",
+    "handle": "@nina.demo",
+    "display_name": null,
+    "current_entry_month": "2026-04",
+    "link_status": "ativo",
+    "needs_group_confirmation": false
+   },
+   {
+    "creator_id": "demo_0003",
+    "handle": "@theo.demo",
+    "display_name": null,
+    "current_entry_month": "2026-05",
+    "link_status": "ativo",
+    "needs_group_confirmation": false
+   },
+   {
+    "creator_id": "demo_0004",
+    "handle": "@vic.demo",
+    "display_name": null,
+    "current_entry_month": "2026-09",
+    "link_status": "ativo",
+    "needs_group_confirmation": false
+   },
+   {
+    "creator_id": "demo_0005",
+    "handle": "@mel.demo",
+    "display_name": null,
+    "current_entry_month": "2026-07",
+    "link_status": "ativo",
+    "needs_group_confirmation": false
+   },
+   {
+    "creator_id": "demo_0006",
+    "handle": "@caio.demo",
+    "display_name": null,
+    "current_entry_month": "2026-06",
+    "link_status": "ativo",
+    "needs_group_confirmation": false
+   },
+   {
+    "creator_id": "demo_0007",
+    "handle": "@joao.demo",
+    "display_name": null,
+    "current_entry_month": "2026-08",
+    "link_status": "ativo",
+    "needs_group_confirmation": false
+   },
+   {
+    "creator_id": "demo_0008",
+    "handle": "@gabi.demo",
+    "display_name": null,
+    "current_entry_month": "2026-10",
+    "link_status": "em_recuperacao",
+    "needs_group_confirmation": false
+   },
+   {
+    "creator_id": "demo_0009",
+    "handle": "@bia.demo",
+    "display_name": null,
+    "current_entry_month": "2026-04",
+    "link_status": "em_recuperacao",
+    "needs_group_confirmation": false
+   },
+   {
+    "creator_id": "demo_0010",
+    "handle": "@rafa.demo",
+    "display_name": null,
+    "current_entry_month": "2026-11",
+    "link_status": "aguardando_fechamento",
+    "needs_group_confirmation": true
+   }
+  ],
+  "cycle_balances": [
+   {
+    "creator_id": "demo_0001",
+    "cycle_id": "2026-T4",
+    "accumulated": 3,
+    "eligible": 3,
+    "entry_bonus": 0,
+    "participation": "apto",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0002",
+    "cycle_id": "2026-T4",
+    "accumulated": 4,
+    "eligible": 4,
+    "entry_bonus": 0,
+    "participation": "apto",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0003",
+    "cycle_id": "2026-T4",
+    "accumulated": 4,
+    "eligible": 4,
+    "entry_bonus": 0,
+    "participation": "apto",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0004",
+    "cycle_id": "2026-T4",
+    "accumulated": 4,
+    "eligible": 4,
+    "entry_bonus": 0,
+    "participation": "apto",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0005",
+    "cycle_id": "2026-T4",
+    "accumulated": 3,
+    "eligible": 3,
+    "entry_bonus": 0,
+    "participation": "apto",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0006",
+    "cycle_id": "2026-T4",
+    "accumulated": 3,
+    "eligible": 3,
+    "entry_bonus": 0,
+    "participation": "apto",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0007",
+    "cycle_id": "2026-T4",
+    "accumulated": 2,
+    "eligible": 2,
+    "entry_bonus": 0,
+    "participation": "apto",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0008",
+    "cycle_id": "2026-T4",
+    "accumulated": 1,
+    "eligible": 1,
+    "entry_bonus": 1,
+    "participation": "apto",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0009",
+    "cycle_id": "2026-T4",
+    "accumulated": 0,
+    "eligible": 0,
+    "entry_bonus": 0,
+    "participation": "sem_cupons",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0010",
+    "cycle_id": "2026-T4",
+    "accumulated": 1,
+    "eligible": 0,
+    "entry_bonus": 1,
+    "participation": "aguardando_fechamento",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0001",
+    "cycle_id": "2026-T2",
+    "accumulated": 3,
+    "eligible": null,
+    "entry_bonus": 1,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0001",
+    "cycle_id": "2026-T3",
+    "accumulated": 9,
+    "eligible": null,
+    "entry_bonus": 0,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0002",
+    "cycle_id": "2026-T2",
+    "accumulated": 4,
+    "eligible": null,
+    "entry_bonus": 1,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0002",
+    "cycle_id": "2026-T3",
+    "accumulated": 12,
+    "eligible": null,
+    "entry_bonus": 0,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0003",
+    "cycle_id": "2026-T2",
+    "accumulated": 2,
+    "eligible": null,
+    "entry_bonus": 1,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0003",
+    "cycle_id": "2026-T3",
+    "accumulated": 10,
+    "eligible": null,
+    "entry_bonus": 0,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0004",
+    "cycle_id": "2026-T3",
+    "accumulated": 3,
+    "eligible": null,
+    "entry_bonus": 1,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0005",
+    "cycle_id": "2026-T3",
+    "accumulated": 6,
+    "eligible": null,
+    "entry_bonus": 1,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0006",
+    "cycle_id": "2026-T2",
+    "accumulated": 2,
+    "eligible": null,
+    "entry_bonus": 1,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0006",
+    "cycle_id": "2026-T3",
+    "accumulated": 5,
+    "eligible": null,
+    "entry_bonus": 0,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0007",
+    "cycle_id": "2026-T3",
+    "accumulated": 3,
+    "eligible": null,
+    "entry_bonus": 1,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0009",
+    "cycle_id": "2026-T2",
+    "accumulated": 2,
+    "eligible": null,
+    "entry_bonus": 1,
+    "participation": "desconhecido",
+    "number_range": null
+   },
+   {
+    "creator_id": "demo_0009",
+    "cycle_id": "2026-T3",
+    "accumulated": 5,
+    "eligible": null,
+    "entry_bonus": 0,
+    "participation": "desconhecido",
+    "number_range": null
+   }
+  ],
+  "monthly_coupons": [
+   {
+    "creator_id": "demo_0001",
+    "month": "2026-06",
+    "vinculo_entry": "2026-05",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0001",
+    "month": "2026-07",
+    "vinculo_entry": "2026-05",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0001",
+    "month": "2026-08",
+    "vinculo_entry": "2026-05",
+    "coupons": 3,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0001",
+    "month": "2026-09",
+    "vinculo_entry": "2026-05",
+    "coupons": 4,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0001",
+    "month": "2026-10",
+    "vinculo_entry": "2026-05",
+    "coupons": 3,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0002",
+    "month": "2026-06",
+    "vinculo_entry": "2026-04",
+    "coupons": 3,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0002",
+    "month": "2026-07",
+    "vinculo_entry": "2026-04",
+    "coupons": 4,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0002",
+    "month": "2026-08",
+    "vinculo_entry": "2026-04",
+    "coupons": 4,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0002",
+    "month": "2026-09",
+    "vinculo_entry": "2026-04",
+    "coupons": 4,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0002",
+    "month": "2026-10",
+    "vinculo_entry": "2026-04",
+    "coupons": 4,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0003",
+    "month": "2026-06",
+    "vinculo_entry": "2026-05",
+    "coupons": 1,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0003",
+    "month": "2026-07",
+    "vinculo_entry": "2026-05",
+    "coupons": 4,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0003",
+    "month": "2026-08",
+    "vinculo_entry": "2026-05",
+    "coupons": 3,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0003",
+    "month": "2026-09",
+    "vinculo_entry": "2026-05",
+    "coupons": 3,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0003",
+    "month": "2026-10",
+    "vinculo_entry": "2026-05",
+    "coupons": 4,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0004",
+    "month": "2026-09",
+    "vinculo_entry": "2026-09",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0004",
+    "month": "2026-10",
+    "vinculo_entry": "2026-09",
+    "coupons": 4,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0005",
+    "month": "2026-07",
+    "vinculo_entry": "2026-07",
+    "coupons": 1,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0005",
+    "month": "2026-08",
+    "vinculo_entry": "2026-07",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0005",
+    "month": "2026-09",
+    "vinculo_entry": "2026-07",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0005",
+    "month": "2026-10",
+    "vinculo_entry": "2026-07",
+    "coupons": 3,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0006",
+    "month": "2026-06",
+    "vinculo_entry": "2026-06",
+    "coupons": 1,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0006",
+    "month": "2026-07",
+    "vinculo_entry": "2026-06",
+    "coupons": 1,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0006",
+    "month": "2026-08",
+    "vinculo_entry": "2026-06",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0006",
+    "month": "2026-09",
+    "vinculo_entry": "2026-06",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0006",
+    "month": "2026-10",
+    "vinculo_entry": "2026-06",
+    "coupons": 3,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0007",
+    "month": "2026-08",
+    "vinculo_entry": "2026-08",
+    "coupons": 1,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0007",
+    "month": "2026-09",
+    "vinculo_entry": "2026-08",
+    "coupons": 1,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0007",
+    "month": "2026-10",
+    "vinculo_entry": "2026-08",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0008",
+    "month": "2026-10",
+    "vinculo_entry": "2026-10",
+    "coupons": 0,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0009",
+    "month": "2026-06",
+    "vinculo_entry": "2026-04",
+    "coupons": 1,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0009",
+    "month": "2026-07",
+    "vinculo_entry": "2026-04",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0009",
+    "month": "2026-08",
+    "vinculo_entry": "2026-04",
+    "coupons": 1,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0009",
+    "month": "2026-09",
+    "vinculo_entry": "2026-04",
+    "coupons": 2,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0009",
+    "month": "2026-10",
+    "vinculo_entry": "2026-04",
+    "coupons": 0,
+    "closed": true
+   },
+   {
+    "creator_id": "demo_0001",
+    "month": "2026-11",
+    "vinculo_entry": "2026-05",
+    "coupons": null,
+    "closed": false
+   },
+   {
+    "creator_id": "demo_0002",
+    "month": "2026-11",
+    "vinculo_entry": "2026-04",
+    "coupons": null,
+    "closed": false
+   },
+   {
+    "creator_id": "demo_0003",
+    "month": "2026-11",
+    "vinculo_entry": "2026-05",
+    "coupons": null,
+    "closed": false
+   },
+   {
+    "creator_id": "demo_0004",
+    "month": "2026-11",
+    "vinculo_entry": "2026-09",
+    "coupons": null,
+    "closed": false
+   },
+   {
+    "creator_id": "demo_0005",
+    "month": "2026-11",
+    "vinculo_entry": "2026-07",
+    "coupons": null,
+    "closed": false
+   },
+   {
+    "creator_id": "demo_0006",
+    "month": "2026-11",
+    "vinculo_entry": "2026-06",
+    "coupons": null,
+    "closed": false
+   },
+   {
+    "creator_id": "demo_0007",
+    "month": "2026-11",
+    "vinculo_entry": "2026-08",
+    "coupons": null,
+    "closed": false
+   },
+   {
+    "creator_id": "demo_0008",
+    "month": "2026-11",
+    "vinculo_entry": "2026-10",
+    "coupons": null,
+    "closed": false
+   },
+   {
+    "creator_id": "demo_0009",
+    "month": "2026-11",
+    "vinculo_entry": "2026-04",
+    "coupons": null,
+    "closed": false
+   },
+   {
+    "creator_id": "demo_0010",
+    "month": "2026-11",
+    "vinculo_entry": "2026-11",
+    "coupons": null,
+    "closed": false
+   }
+  ],
+  "pip_status": [
+   {
+    "creator_id": "demo_0001",
+    "status": "ativo",
+    "reference_month": "2026-10",
+    "recovery_month": null,
+    "result": null,
+    "last_confirmed_status": "ativo",
+    "last_confirmed_month": "2026-10"
+   },
+   {
+    "creator_id": "demo_0002",
+    "status": "ativo",
+    "reference_month": "2026-10",
+    "recovery_month": null,
+    "result": null,
+    "last_confirmed_status": "ativo",
+    "last_confirmed_month": "2026-10"
+   },
+   {
+    "creator_id": "demo_0003",
+    "status": "ativo",
+    "reference_month": "2026-10",
+    "recovery_month": null,
+    "result": null,
+    "last_confirmed_status": "ativo",
+    "last_confirmed_month": "2026-10"
+   },
+   {
+    "creator_id": "demo_0004",
+    "status": "ativo",
+    "reference_month": "2026-10",
+    "recovery_month": null,
+    "result": null,
+    "last_confirmed_status": "ativo",
+    "last_confirmed_month": "2026-10"
+   },
+   {
+    "creator_id": "demo_0005",
+    "status": "ativo",
+    "reference_month": "2026-10",
+    "recovery_month": null,
+    "result": null,
+    "last_confirmed_status": "ativo",
+    "last_confirmed_month": "2026-10"
+   },
+   {
+    "creator_id": "demo_0006",
+    "status": "ativo",
+    "reference_month": "2026-10",
+    "recovery_month": null,
+    "result": null,
+    "last_confirmed_status": "ativo",
+    "last_confirmed_month": "2026-10"
+   },
+   {
+    "creator_id": "demo_0007",
+    "status": "ativo",
+    "reference_month": "2026-10",
+    "recovery_month": null,
+    "result": null,
+    "last_confirmed_status": "ativo",
+    "last_confirmed_month": "2026-10"
+   },
+   {
+    "creator_id": "demo_0008",
+    "status": "em_recuperacao",
+    "reference_month": "2026-10",
+    "recovery_month": "2026-11",
+    "result": null,
+    "last_confirmed_status": "em_recuperacao",
+    "last_confirmed_month": "2026-10"
+   },
+   {
+    "creator_id": "demo_0009",
+    "status": "em_recuperacao",
+    "reference_month": "2026-10",
+    "recovery_month": "2026-11",
+    "result": null,
+    "last_confirmed_status": "em_recuperacao",
+    "last_confirmed_month": "2026-10"
+   },
+   {
+    "creator_id": "demo_0010",
+    "status": "aguardando_fechamento",
+    "reference_month": "2026-11",
+    "recovery_month": null,
+    "result": null,
+    "last_confirmed_status": null,
+    "last_confirmed_month": null
+   }
+  ],
+  "gift_deliveries": [
+   {
+    "creator_id": "demo_0001",
+    "vinculo_entry": "2026-05",
+    "reference": "Boas-vindas",
+    "reference_key": "boas-vindas",
+    "kind": "boas_vindas",
+    "delivered_on": "2026-05-14",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0001",
+    "vinculo_entry": "2026-05",
+    "reference": "Renovação ago/2026",
+    "reference_key": "renovacao ago/2026",
+    "kind": "renovacao",
+    "delivered_on": "2026-08-20",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0002",
+    "vinculo_entry": "2026-04",
+    "reference": "Boas-vindas",
+    "reference_key": "boas-vindas",
+    "kind": "boas_vindas",
+    "delivered_on": "2026-04-22",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0002",
+    "vinculo_entry": "2026-04",
+    "reference": "Renovação jul/2026",
+    "reference_key": "renovacao jul/2026",
+    "kind": "renovacao",
+    "delivered_on": "2026-07-18",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0002",
+    "vinculo_entry": "2026-04",
+    "reference": "Renovação out/2026",
+    "reference_key": "renovacao out/2026",
+    "kind": "renovacao",
+    "delivered_on": "2026-10-16",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0003",
+    "vinculo_entry": "2026-05",
+    "reference": "Boas-vindas",
+    "reference_key": "boas-vindas",
+    "kind": "boas_vindas",
+    "delivered_on": "2026-05-30",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0003",
+    "vinculo_entry": "2026-05",
+    "reference": "Renovação ago/2026",
+    "reference_key": "renovacao ago/2026",
+    "kind": "renovacao",
+    "delivered_on": "2026-08-28",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0004",
+    "vinculo_entry": "2025-03",
+    "reference": "Boas-vindas",
+    "reference_key": "boas-vindas",
+    "kind": "boas_vindas",
+    "delivered_on": "2025-03-18",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0004",
+    "vinculo_entry": "2025-03",
+    "reference": "Renovação jun/2025",
+    "reference_key": "renovacao jun/2025",
+    "kind": "renovacao",
+    "delivered_on": "2025-06-20",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0004",
+    "vinculo_entry": "2026-09",
+    "reference": "Boas-vindas",
+    "reference_key": "boas-vindas",
+    "kind": "boas_vindas",
+    "delivered_on": "2026-09-25",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0005",
+    "vinculo_entry": "2026-07",
+    "reference": "Boas-vindas",
+    "reference_key": "boas-vindas",
+    "kind": "boas_vindas",
+    "delivered_on": "2026-07-25",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0006",
+    "vinculo_entry": "2026-06",
+    "reference": "Boas-vindas",
+    "reference_key": "boas-vindas",
+    "kind": "boas_vindas",
+    "delivered_on": "2026-06-20",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0006",
+    "vinculo_entry": "2026-06",
+    "reference": "Renovação set/2026",
+    "reference_key": "renovacao set/2026",
+    "kind": "renovacao",
+    "delivered_on": "2026-10-05",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0008",
+    "vinculo_entry": "2026-10",
+    "reference": "Boas-vindas",
+    "reference_key": "boas-vindas",
+    "kind": "boas_vindas",
+    "delivered_on": "2026-10-28",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0009",
+    "vinculo_entry": "2026-04",
+    "reference": "Boas-vindas",
+    "reference_key": "boas-vindas",
+    "kind": "boas_vindas",
+    "delivered_on": "2026-04-10",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0009",
+    "vinculo_entry": "2026-04",
+    "reference": "Renovação jul/2026",
+    "reference_key": "renovacao jul/2026",
+    "kind": "renovacao",
+    "delivered_on": "2026-07-15",
+    "coins": 5000
+   },
+   {
+    "creator_id": "demo_0009",
+    "vinculo_entry": "2026-04",
+    "reference": "Renovação out/2026",
+    "reference_key": "renovacao out/2026",
+    "kind": "renovacao",
+    "delivered_on": "2026-10-22",
+    "coins": 5000
+   }
+  ],
+  "gift_next": [
+   {
+    "creator_id": "demo_0001",
+    "vinculo_entry": "2026-05",
+    "reference": "nov/2026",
+    "kind": "renovacao",
+    "situation": "disponivel",
+    "situation_raw": "Disponível",
+    "coins": 5000,
+    "forecast_month": "2026-11",
+    "forecast_date": null
+   },
+   {
+    "creator_id": "demo_0002",
+    "vinculo_entry": "2026-04",
+    "reference": "jan/2027",
+    "kind": "renovacao",
+    "situation": "agendado",
+    "situation_raw": "Agendado",
+    "coins": 5000,
+    "forecast_month": "2027-01",
+    "forecast_date": null
+   },
+   {
+    "creator_id": "demo_0003",
+    "vinculo_entry": "2026-05",
+    "reference": "nov/2026",
+    "kind": "renovacao",
+    "situation": "disponivel",
+    "situation_raw": "Disponível",
+    "coins": 5000,
+    "forecast_month": "2026-11",
+    "forecast_date": null
+   },
+   {
+    "creator_id": "demo_0004",
+    "vinculo_entry": "2026-09",
+    "reference": "dez/2026",
+    "kind": "renovacao",
+    "situation": "agendado",
+    "situation_raw": "Agendado",
+    "coins": 5000,
+    "forecast_month": "2026-12",
+    "forecast_date": null
+   },
+   {
+    "creator_id": "demo_0005",
+    "vinculo_entry": "2026-07",
+    "reference": "out/2026",
+    "kind": "renovacao",
+    "situation": "disponivel",
+    "situation_raw": "Disponível",
+    "coins": 5000,
+    "forecast_month": "2026-10",
+    "forecast_date": null
+   },
+   {
+    "creator_id": "demo_0006",
+    "vinculo_entry": "2026-06",
+    "reference": "jan/2027",
+    "kind": "renovacao",
+    "situation": "agendado",
+    "situation_raw": "Agendado",
+    "coins": 5000,
+    "forecast_month": "2027-01",
+    "forecast_date": null
+   },
+   {
+    "creator_id": "demo_0007",
+    "vinculo_entry": "2026-08",
+    "reference": "Boas-vindas",
+    "kind": "boas_vindas",
+    "situation": "disponivel",
+    "situation_raw": "Disponível",
+    "coins": 5000,
+    "forecast_month": "2026-08",
+    "forecast_date": null
+   },
+   {
+    "creator_id": "demo_0008",
+    "vinculo_entry": "2026-10",
+    "reference": "jan/2027",
+    "kind": "renovacao",
+    "situation": "agendado",
+    "situation_raw": "Agendado",
+    "coins": 5000,
+    "forecast_month": "2027-01",
+    "forecast_date": null
+   },
+   {
+    "creator_id": "demo_0009",
+    "vinculo_entry": "2026-04",
+    "reference": "jan/2027",
+    "kind": "renovacao",
+    "situation": "agendado",
+    "situation_raw": "Agendado",
+    "coins": 5000,
+    "forecast_month": "2027-01",
+    "forecast_date": "2027-01-20"
+   },
+   {
+    "creator_id": "demo_0010",
+    "vinculo_entry": "2026-11",
+    "reference": "Boas-vindas",
+    "kind": "boas_vindas",
+    "situation": "aguardando_fechamento",
+    "situation_raw": "Aguardando fechamento",
+    "coins": 5000,
+    "forecast_month": "2026-11",
+    "forecast_date": null
+   }
+  ],
+  "ranking_entries": [
+   {
+    "cycle_id": "2026-T2",
+    "creator_id": "demo_0001",
+    "handle": "@luna.demo",
+    "coupons": 3
+   },
+   {
+    "cycle_id": "2026-T2",
+    "creator_id": "demo_0002",
+    "handle": "@nina.demo",
+    "coupons": 4
+   },
+   {
+    "cycle_id": "2026-T2",
+    "creator_id": "demo_0003",
+    "handle": "@theo.demo",
+    "coupons": 2
+   },
+   {
+    "cycle_id": "2026-T2",
+    "creator_id": "demo_0006",
+    "handle": "@caio.demo",
+    "coupons": 2
+   },
+   {
+    "cycle_id": "2026-T2",
+    "creator_id": "demo_0009",
+    "handle": "@bia.demo",
+    "coupons": 2
+   },
+   {
+    "cycle_id": "2026-T3",
+    "creator_id": "demo_0001",
+    "handle": "@luna.demo",
+    "coupons": 9
+   },
+   {
+    "cycle_id": "2026-T3",
+    "creator_id": "demo_0002",
+    "handle": "@nina.demo",
+    "coupons": 12
+   },
+   {
+    "cycle_id": "2026-T3",
+    "creator_id": "demo_0003",
+    "handle": "@theo.demo",
+    "coupons": 10
+   },
+   {
+    "cycle_id": "2026-T3",
+    "creator_id": "demo_0004",
+    "handle": "@vic.demo",
+    "coupons": 3
+   },
+   {
+    "cycle_id": "2026-T3",
+    "creator_id": "demo_0005",
+    "handle": "@mel.demo",
+    "coupons": 6
+   },
+   {
+    "cycle_id": "2026-T3",
+    "creator_id": "demo_0006",
+    "handle": "@caio.demo",
+    "coupons": 5
+   },
+   {
+    "cycle_id": "2026-T3",
+    "creator_id": "demo_0007",
+    "handle": "@joao.demo",
+    "coupons": 3
+   },
+   {
+    "cycle_id": "2026-T3",
+    "creator_id": "demo_0009",
+    "handle": "@bia.demo",
+    "coupons": 5
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0001",
+    "handle": "@luna.demo",
+    "coupons": 3
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0002",
+    "handle": "@nina.demo",
+    "coupons": 4
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0003",
+    "handle": "@theo.demo",
+    "coupons": 4
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0004",
+    "handle": "@vic.demo",
+    "coupons": 4
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0005",
+    "handle": "@mel.demo",
+    "coupons": 3
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0006",
+    "handle": "@caio.demo",
+    "coupons": 3
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0007",
+    "handle": "@joao.demo",
+    "coupons": 2
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0008",
+    "handle": "@gabi.demo",
+    "coupons": 1
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0009",
+    "handle": "@bia.demo",
+    "coupons": 0
+   },
+   {
+    "cycle_id": "2026-T4",
+    "creator_id": "demo_0010",
+    "handle": "@rafa.demo",
+    "coupons": 1
+   }
+  ],
+  "calendar_events": [
+   {
+    "event_id": "sorteio-2026-t3",
+    "type": "sorteio",
+    "title": "Sorteio Jul–Set 2026",
+    "cycle_id": "2026-T3",
+    "expected_month": "2026-10",
+    "confirmed_date": "2026-10-20",
+    "confirmed_time": "20:00",
+    "status": "realizado",
+    "trip_start": null,
+    "trip_end": null,
+    "destination": null,
+    "details": "Sorteio ao vivo na LIVE da NP.",
+    "official_url": null,
+    "previous_date": "2026-10-13",
+    "image_url": null,
+    "published": true
+   },
+   {
+    "event_id": "resultado-2026-t3",
+    "type": "resultado",
+    "title": "Resultado Jul–Set 2026",
+    "cycle_id": "2026-T3",
+    "expected_month": "2026-10",
+    "confirmed_date": "2026-10-21",
+    "confirmed_time": null,
+    "status": "realizado",
+    "trip_start": null,
+    "trip_end": null,
+    "destination": null,
+    "details": "Ganhadores anunciados no feed da NP.",
+    "official_url": null,
+    "previous_date": null,
+    "image_url": null,
+    "published": true
+   },
+   {
+    "event_id": "viagem-2026-t3",
+    "type": "viagem",
+    "title": "Viagem dos ganhadores Jul–Set 2026",
+    "cycle_id": "2026-T3",
+    "expected_month": null,
+    "confirmed_date": null,
+    "confirmed_time": null,
+    "status": "confirmado",
+    "trip_start": "2027-02-18",
+    "trip_end": "2027-02-21",
+    "destination": "Rio de Janeiro",
+    "details": "Voos e hotel inclusos, com direito a um acompanhante. Demais gastos por conta dos ganhadores.",
+    "official_url": null,
+    "previous_date": null,
+    "image_url": null,
+    "published": true
+   },
+   {
+    "event_id": "sorteio-2026-t4",
+    "type": "sorteio",
+    "title": "Sorteio Out–Dez 2026",
+    "cycle_id": "2026-T4",
+    "expected_month": "2027-01",
+    "confirmed_date": null,
+    "confirmed_time": null,
+    "status": "previsto",
+    "trip_start": null,
+    "trip_end": null,
+    "destination": null,
+    "details": null,
+    "official_url": null,
+    "previous_date": null,
+    "image_url": null,
+    "published": true
+   }
+  ],
+  "draw_results": [
+   {
+    "result_id": "res-2026-t3",
+    "cycle_id": "2026-T3",
+    "title": "Ganhadores Jul–Set 2026",
+    "draw_date": "2026-10-20",
+    "published_on": "2026-10-21",
+    "winners": [
+     "@nina.demo",
+     "@theo.demo",
+     "@luna.demo"
+    ],
+    "notes": "Três viagens com acompanhante.",
+    "official_url": null,
+    "published": true
+   }
+  ]
+ },
+ "issues": [
+  {
+   "severity": "warning",
+   "sheet": "Registro de entregas",
+   "rowRef": "A4",
+   "code": "entrega_duplicada",
+   "message": "Linha 4 repete ID + entrada + referência; não gera entrega extra."
+  }
+ ]
+}

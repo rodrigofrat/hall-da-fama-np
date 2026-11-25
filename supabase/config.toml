@@ -1,0 +1,14 @@
+# Configuração mínima para `supabase start` / `supabase db push`.
+project_id = "hall-da-fama-np"
+
+[auth]
+# Só convidados entram: a agência cria a conta e vincula ao ID do criador.
+enable_signup = false
+site_url = "https://SEU-USUARIO.github.io/NOME-DO-REPO/"
+additional_redirect_urls = ["http://localhost:5173/", "http://localhost:4173/"]
+
+[auth.email]
+enable_signup = false
+# O login usa código de 6 dígitos por e-mail (funciona no navegador interno do WhatsApp).
+otp_length = 6
+otp_expiry = 900

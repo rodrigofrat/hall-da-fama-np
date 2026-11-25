@@ -1,0 +1,6 @@
+id,tipo,titulo,ciclo,mes_previsto,data_confirmada,horario,status,inicio_viagem,fim_viagem,destino,detalhes,link_oficial,data_anterior,imagem_url,published
+sorteio-2026-t3,sorteio,Sorteio Jul–Set 2026,2026-T3,01/10/2026,20/10/2026,20:00,realizado,,,,Sorteio ao vivo na LIVE da NP.,,13/10/2026,,sim
+resultado-2026-t3,resultado,Resultado Jul–Set 2026,2026-T3,01/10/2026,21/10/2026,,realizado,,,,Ganhadores anunciados no feed da NP.,,,,sim
+viagem-2026-t3,viagem,Viagem dos ganhadores Jul–Set 2026,2026-T3,,,,confirmado,18/02/2027,21/02/2027,Rio de Janeiro,"Voos e hotel inclusos, com direito a um acompanhante. Demais gastos por conta dos ganhadores.",,,,sim
+sorteio-2026-t4,sorteio,Sorteio Out–Dez 2026,2026-T4,01/01/2027,,,previsto,,,,,,,,sim
+viagem-2026-t4,viagem,Viagem dos ganhadores Out–Dez 2026,2026-T4,01/04/2027,,,previsto,,,,Destino a confirmar pela agência.,,,,não
