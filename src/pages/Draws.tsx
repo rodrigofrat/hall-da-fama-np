@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 import { useCalendar, useMe } from '../app/data';
 import { balanceFor } from '../app/selectors';
 import {
-  EVENT_STATUS_LABEL, EVENT_TYPE_LABEL, eventMonth, eventTiming, nextDraw, sortEvents,
+  EVENT_STATUS_LABEL, EVENT_TYPE_LABEL, eventMonth, eventTiming, nextDraw,
   type CalendarEvent, type DrawResult, type EventTiming,
 } from '../domain/calendar';
 import { cycleById, cycleForDrawMonth } from '../domain/cycles';
@@ -11,6 +11,21 @@ import { addMonths, dateLong, dateShort, monthLabel, monthLabelCap, monthOf, tod
 import { PARTICIPATION_HELP } from '../domain/status';
 import { Accordion, Card, ErrorState, Loading, Notice, PageHead, Pill, type Tone } from '../ui/components';
 import { ParticipationPill } from '../ui/status';
+
+const LIVE_FEST_EVENTS = [
+  { id: 'live-fest-2026-superliga', type: 'live_fest', title: 'LIVE Fest · Super Liga Regional', start: '2026-11-20', end: '2026-12-06' },
+  { id: 'live-fest-2026-fase-2', type: 'live_fest', title: 'LIVE Fest · Fase 2 da Super Liga', start: '2026-11-27', end: '2026-12-01' },
+  { id: 'live-fest-2026-fase-3', type: 'live_fest', title: 'LIVE Fest · Fase 3 da Super Liga', start: '2026-12-04', end: '2026-12-06' },
+  { id: 'live-fest-2026-global', type: 'live_fest', title: 'LIVE Fest · Final Global no TikTok', start: '2026-12-17', end: '2026-12-21' },
+] as const;
+
+type LiveFestEvent = typeof LIVE_FEST_EVENTS[number];
+type ScheduleEvent = CalendarEvent | LiveFestEvent;
+
+function scheduleStart(event: ScheduleEvent) {
+  return event.type === 'live_fest' ? event.start
+    : (event.type === 'viagem' && event.tripStart) || event.confirmedDate || (event.expectedMonth ? `${event.expectedMonth}-99` : '9999');
+}
 
 const TYPE_ICON = { sorteio: Ticket, resultado: Megaphone, viagem: Plane };
 const TIMING_TONE: Record<EventTiming['kind'], Tone> = { mes: 'neutral', futuro: 'pink', hoje: 'pink', aguardando: 'warn', passado: 'dim', em_andamento: 'ok', cancelado: 'dim', sem_data: 'neutral' };
@@ -121,10 +136,29 @@ function EventCard({ ev, today, hasResult }: { ev: CalendarEvent; today: string;
   );
 }
 
+function ScheduleCard({ event, today, resultCycles }: { event: ScheduleEvent; today: string; resultCycles: Set<string> }) {
+  if (event.type !== 'live_fest') {
+    return <EventCard ev={event} today={today} hasResult={!!event.cycleId && resultCycles.has(event.cycleId)} />;
+  }
+
+  const status = today < event.start ? 'Em breve' : today <= event.end ? 'Em andamento' : 'Encerrado';
+  return (
+    <li className="card event fade-in">
+      <span className="ico"><Trophy aria-hidden /></span>
+      <div className="body">
+        <h3>{event.title}</h3>
+        <p className="small">{dateShort(event.start)} a {dateShort(event.end)}</p>
+        <Pill tone={status === 'Em andamento' ? 'ok' : 'neutral'}>{status}</Pill>
+      </div>
+    </li>
+  );
+}
+
 function EventList({ events, today, resultCycles }: { events: CalendarEvent[]; today: string; resultCycles: Set<string> }) {
-  const sorted = sortEvents(events);
+  const sorted = [...events, ...LIVE_FEST_EVENTS].sort((a, b) => scheduleStart(a).localeCompare(scheduleStart(b)));
   const thisMonth = monthOf(today);
   const upcoming = sorted.filter((e) => {
+    if (e.type === 'live_fest') return e.end >= today;
     const end = e.type === 'viagem' ? e.tripEnd ?? e.tripStart : e.confirmedDate;
     if (end) return end >= today || (e.type === 'sorteio' && !(e.cycleId && resultCycles.has(e.cycleId)));
     return (eventMonth(e) ?? '9999') >= thisMonth;
@@ -133,12 +167,12 @@ function EventList({ events, today, resultCycles }: { events: CalendarEvent[]; t
   return (
     <>
       <section aria-labelledby="prox-ev"><h2 id="prox-ev" style={{ margin: '4px 2px 10px' }}>Próximos eventos</h2>
-        {upcoming.length ? <ul className="list" style={{ gap: 12 }}>{upcoming.map((e) => <EventCard key={e.id} ev={e} today={today} hasResult={!!e.cycleId && resultCycles.has(e.cycleId)} />)}</ul>
+        {upcoming.length ? <ul className="list" style={{ gap: 12 }}>{upcoming.map((e) => <ScheduleCard key={e.id} event={e} today={today} resultCycles={resultCycles} />)}</ul>
           : <Notice>Nenhum evento futuro publicado. As datas aparecem aqui quando a agência divulgar.</Notice>}
       </section>
       {past.length > 0 && (
         <Accordion title={`Eventos anteriores (${past.length})`}>
-          <ul className="list" style={{ gap: 12 }}>{past.map((e) => <EventCard key={e.id} ev={e} today={today} hasResult={!!e.cycleId && resultCycles.has(e.cycleId)} />)}</ul>
+          <ul className="list" style={{ gap: 12 }}>{past.map((e) => <ScheduleCard key={e.id} event={e} today={today} resultCycles={resultCycles} />)}</ul>
         </Accordion>
       )}
     </>
@@ -151,12 +185,14 @@ function MonthView({ events, today, resultCycles }: { events: CalendarEvent[]; t
   const first = new Date(Date.UTC(y, m - 1, 1)).getUTCDay();
   const days = new Date(Date.UTC(y, m, 0)).getUTCDate();
   const byDay = useMemo(() => {
-    const map = new Map<number, CalendarEvent[]>();
-    for (const e of events) {
+    const map = new Map<number, ScheduleEvent[]>();
+    for (const e of [...events, ...LIVE_FEST_EVENTS]) {
       const dates: string[] = [];
-      if (e.type === 'viagem' && e.tripStart) {
-        let d = e.tripStart;
-        const end = e.tripEnd ?? e.tripStart;
+      if (e.type === 'live_fest' || (e.type === 'viagem' && e.tripStart)) {
+        const start = e.type === 'live_fest' ? e.start : e.tripStart;
+        if (!start) continue;
+        let d = start as string;
+        const end = e.type === 'live_fest' ? e.end : e.tripEnd ?? d;
         let guard = 0;
         while (d <= end && guard++ < 40) {
           dates.push(d);
@@ -171,7 +207,10 @@ function MonthView({ events, today, resultCycles }: { events: CalendarEvent[]; t
     return map;
   }, [events, month]);
   const undated = events.filter((e) => !e.confirmedDate && !(e.type === 'viagem' && e.tripStart) && e.expectedMonth === month);
-  const listed = sortEvents(events.filter((e) => eventMonth(e) === month || (e.tripEnd && monthOf(e.tripEnd) === month)));
+  const listed = [
+    ...events.filter((e) => eventMonth(e) === month || (e.tripEnd && monthOf(e.tripEnd) === month)),
+    ...LIVE_FEST_EVENTS.filter((e) => monthOf(e.start) <= month && monthOf(e.end) >= month),
+  ].sort((a, b) => scheduleStart(a).localeCompare(scheduleStart(b)));
 
   return (
     <Card labelledBy="mes-title" title={monthLabelCap(month)} icon={CalendarDays}
@@ -188,9 +227,9 @@ function MonthView({ events, today, resultCycles }: { events: CalendarEvent[]; t
           const evs = byDay.get(d) ?? [];
           return (
             <div key={d} className={`day ${iso === today ? 'today' : ''}`} role="gridcell"
-              aria-label={`${dateLong(iso)}${evs.length ? ': ' + evs.map((e) => EVENT_TYPE_LABEL[e.type]).join(', ') : ''}`}>
+              aria-label={`${dateLong(iso)}${evs.length ? ': ' + evs.map((e) => (e.type === 'live_fest' ? e.title : EVENT_TYPE_LABEL[e.type])).join(', ') : ''}`}>
               <span aria-hidden>{d}</span>
-              {evs.map((e) => <span key={e.id} className={`dot ${e.type}`} aria-hidden />)}
+              {evs.map((e) => <span key={e.id} className={`dot ${e.type}`} style={e.type === 'live_fest' ? { background: 'var(--np-pink)' } : undefined} aria-hidden />)}
             </div>
           );
         })}
@@ -199,9 +238,10 @@ function MonthView({ events, today, resultCycles }: { events: CalendarEvent[]; t
         <span><span className="legend-dot sorteio" aria-hidden />Sorteio</span>
         <span><span className="legend-dot resultado" aria-hidden />Resultado</span>
         <span><span className="legend-dot viagem" aria-hidden />Viagem</span>
+        <span><span className="legend-dot" style={{ background: 'var(--np-pink)' }} aria-hidden />LIVE Fest</span>
       </p>
       {undated.length > 0 && <Notice>Neste mês, com dia a confirmar: {undated.map((e) => e.title).join(', ')}.</Notice>}
-      {listed.length > 0 && <ul className="list" style={{ gap: 12 }}>{listed.map((e) => <EventCard key={e.id} ev={e} today={today} hasResult={!!e.cycleId && resultCycles.has(e.cycleId)} />)}</ul>}
+      {listed.length > 0 && <ul className="list" style={{ gap: 12 }}>{listed.map((e) => <ScheduleCard key={e.id} event={e} today={today} resultCycles={resultCycles} />)}</ul>}
     </Card>
   );
 }
