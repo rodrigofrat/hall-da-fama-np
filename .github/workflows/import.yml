@@ -1,0 +1,18 @@
+name: Importar arquivos do portal
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  import:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Importar a arvore de arquivos revisada
+        run: |
+          if [ ! -f hall-portal-source.zip ]; then exit 0; fi
+          unzip -q hall-portal-source.zip -x '.github/workflows/*'
+          git rm hall-portal-source.zip
+          git add --all
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Adicionar codigo revisado do portal'
+          git push origin HEAD:main
