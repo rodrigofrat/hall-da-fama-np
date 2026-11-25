@@ -1,4 +1,4 @@
-import { CalendarDays, Gift, HeartPulse, Home, PlayCircle, ScrollText, Settings2, Ticket, UserRound } from 'lucide-react';
+import { CalendarDays, ChevronDown, Gift, HeartPulse, Home, PlayCircle, ScrollText, Settings2, Ticket, UserRound } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Logo } from '../ui/Logo';
@@ -50,12 +50,19 @@ export function Shell({ children }: { children: ReactNode }) {
         {!!browsableCreators?.length && (
           <div className="card field" style={{ marginBottom: 16 }}>
             <label htmlFor="viewed-creator">Consultar painel de um criador</label>
-            <select id="viewed-creator" className="select" value={viewedCreatorId}
-              onChange={(event) => viewCreator(event.target.value)}>
-              {browsableCreators.map((creator) => (
-                <option key={creator.creator_id} value={creator.creator_id}>{creator.handle}</option>
-              ))}
-            </select>
+            <div style={{ position: 'relative' }}>
+              <select id="viewed-creator" className="select" value={viewedCreatorId}
+                style={{ appearance: 'none', width: '100%', paddingInlineEnd: 44 }}
+                onChange={(event) => viewCreator(event.target.value)}>
+                {browsableCreators.map((creator) => (
+                  <option key={creator.creator_id} value={creator.creator_id}>{creator.handle}</option>
+                ))}
+              </select>
+              <ChevronDown aria-hidden size={16} style={{
+                position: 'absolute', insetInlineEnd: 16, top: '50%',
+                transform: 'translateY(-50%)', pointerEvents: 'none',
+              }} />
+            </div>
           </div>
         )}
         {children}
