@@ -1,16 +1,16 @@
-import { CalendarDays, ChevronRight, Gift, HeartPulse, Play, Sparkles, Ticket, Trophy } from 'lucide-react';
+import { ChevronRight, Gift, HeartPulse, Plane, Play, Sparkles, Ticket, Trophy } from 'lucide-react';
 import { VIDEOS } from '../config/videos';
 import { Link } from 'react-router-dom';
 import { balanceFor, currentCycle } from '../app/selectors';
 import { useCalendar, useMe, useRanking } from '../app/data';
 import { cycleById, isCyclePartial } from '../domain/cycles';
-import { eventTiming, nextDraw, nextDrawSentence } from '../domain/calendar';
-import { monthLabel, todayInSaoPaulo } from '../domain/dates';
+import { eventTiming, nextDraw } from '../domain/calendar';
+import { monthLabel, monthLabelCap, todayInSaoPaulo } from '../domain/dates';
 import { forecastText, GIFT_KIND_LABEL } from '../domain/gifts';
 import { LINK_STATUS_LABEL, PARTICIPATION_HELP, resolvePipDisplay } from '../domain/status';
 import { formatInt, plural } from '../domain/text';
 import type { MeData } from '../data/types';
-import { Card, ErrorState, Freshness, Loading, Notice, Pill } from '../ui/components';
+import { ErrorState, Freshness, Loading, Notice, Pill } from '../ui/components';
 import { GiftSituationPill, LinkStatusPill, ParticipationPill } from '../ui/status';
 
 export function HomePage() {
@@ -43,6 +43,30 @@ function Home({ me }: { me: MeData }) {
         <h1>Olá, {name || 'criador'}!</h1>
       </header>
 
+      <section className="card hero fade-in" aria-labelledby="beneficio-viagens">
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px 32px' }}>
+          <div style={{ flex: '2 1 280px', minWidth: 0 }}>
+            <div className="card-head">
+              <h2 id="beneficio-viagens"><Plane aria-hidden /> Sorteio de 3 viagens</h2>
+            </div>
+            <p className="small muted">
+              A cada trimestre, três criadores ganham uma viagem com acompanhante, voos e hotel inclusos.
+            </p>
+            <Link to="/sorteios" className="btn pink">Ver sorteios e viagens <ChevronRight size={18} aria-hidden /></Link>
+          </div>
+          <div style={{ flex: '1 1 200px', minWidth: 0 }}>
+            <span className="eyebrow">Próximo sorteio</span>
+            {cal.loading && !cal.data ? <p className="muted">Carregando a previsão…</p> : draw && drawTiming ? (
+              <>
+                <p className="countdown">{drawTiming.kind === 'mes' && draw.expectedMonth ? monthLabelCap(draw.expectedMonth) : drawTiming.headline}</p>
+                <p className="small muted">{drawTiming.kind === 'mes' ? 'Dia a confirmar pela agência' : drawTiming.whenText}</p>
+                {bal && <p className="small muted">{PARTICIPATION_HELP[bal.participation]}</p>}
+              </>
+            ) : <p className="muted">{cal.error ? 'Calendário indisponível no momento.' : 'Data a confirmar pela agência.'}</p>}
+          </div>
+        </div>
+      </section>
+
       <nav className="learn" aria-label="Vídeos de ajuda">
         <Link to="/videos/painel" className="learn-btn">
           <span className="play"><Play size={22} fill="currentColor" aria-hidden /></span>
@@ -64,50 +88,36 @@ function Home({ me }: { me: MeData }) {
         <Notice>Este vínculo com o Hall foi encerrado. Você ainda pode consultar seu histórico.</Notice>
       )}
 
-      <div className="grid-2 home-grid">
-        <section className="card hero fade-in" aria-labelledby="saldo-title">
-          <div className="card-head">
-            <h2 id="saldo-title"><Ticket aria-hidden /> Seus cupons</h2>
-            {partial ? <Pill tone="warn">Parcial</Pill> : <Pill tone="ok">Fechado</Pill>}
-          </div>
-          {bal && bal.accumulated !== null ? (
-            <p className="big-number" aria-label={`${bal.accumulated} cupons acumulados`}>{formatInt(bal.accumulated)}<small>{bal.accumulated === 1 ? "cupom" : "cupons"}</small></p>
-          ) : (
-            <p className="mid-number">—<span className="small muted"> aguardando fechamento</span></p>
+      <section className="card hero fade-in" aria-labelledby="saldo-title">
+        <div className="card-head">
+          <h2 id="saldo-title"><Ticket aria-hidden /> Seus cupons</h2>
+          {partial ? <Pill tone="warn">Parcial</Pill> : <Pill tone="ok">Fechado</Pill>}
+        </div>
+        {bal && bal.accumulated !== null ? (
+          <p className="big-number" aria-label={`${bal.accumulated} cupons acumulados`}>{formatInt(bal.accumulated)}<small>{bal.accumulated === 1 ? "cupom" : "cupons"}</small></p>
+        ) : (
+          <p className="mid-number">—<span className="small muted"> aguardando fechamento</span></p>
+        )}
+        <p className="small muted">
+          Ciclo <b style={{ color: '#fff' }}>{cycle?.label ?? '—'}</b>
+          {cycle && <> · sorteio em {monthLabel(cycle.drawMonth)}</>}
+        </p>
+        <div className="stat-row">
+          {myRow && (
+            <div className="stat"><span className="label">Posição no ranking</span>
+              <span className="value">{myRow.position}º{myRow.tied ? ' (empate)' : ''}</span></div>
           )}
-          <p className="small muted">
-            Ciclo <b style={{ color: '#fff' }}>{cycle?.label ?? '—'}</b>
-            {cycle && <> · sorteio em {monthLabel(cycle.drawMonth)}</>}
-          </p>
-          <div className="stat-row">
-            {myRow && (
-              <div className="stat"><span className="label">Posição no ranking</span>
-                <span className="value">{myRow.position}º{myRow.tied ? ' (empate)' : ''}</span></div>
-            )}
-            {bal && <div className="stat"><span className="label">Sorteio</span><span className="value"><ParticipationPill code={bal.participation} /></span></div>}
-            {bal && bal.entryBonus > 0 && <div className="stat"><span className="label">Inclui</span><span className="value">+1 cupom de entrada</span></div>}
-          </div>
-          {partial && pendingMonths.length > 0 && (
-            <p className="tiny muted">Saldo parcial: {pendingMonths.map(monthLabel).join(' e ')} ainda {pendingMonths.length > 1 ? 'não foram fechados' : 'não foi fechado'}.</p>
-          )}
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            <Link to="/cupons" className="btn pink">Meus cupons</Link>
-            {me.profile.rankingAuthorized && <Link to="/cupons/ranking" className="btn secondary"><Trophy size={18} aria-hidden /> Ranking</Link>}
-          </div>
-        </section>
-
-        <Card title="Próximo sorteio" icon={CalendarDays} labelledBy="sorteio-title"
-          action={<Link className="text-link" to="/sorteios">Calendário <ChevronRight size={16} aria-hidden /></Link>}>
-          {cal.loading && !cal.data ? <p className="muted">Carregando…</p> : draw && drawTiming ? (
-            <>
-              <p className="countdown">{drawTiming.kind === 'mes' ? monthLabel(draw.expectedMonth!).replace(/^./, (c) => c.toUpperCase()) : drawTiming.headline}</p>
-              <p className="muted">{drawTiming.kind === 'mes' ? 'Dia a confirmar pela agência' : drawTiming.whenText}</p>
-              <span className="sr-only">{nextDrawSentence(draw, today)}</span>
-              {bal && <p className="small muted">{PARTICIPATION_HELP[bal.participation]}</p>}
-            </>
-          ) : <p className="muted">Nenhum sorteio previsto no momento.</p>}
-        </Card>
-      </div>
+          {bal && <div className="stat"><span className="label">Sorteio</span><span className="value"><ParticipationPill code={bal.participation} /></span></div>}
+          {bal && bal.entryBonus > 0 && <div className="stat"><span className="label">Inclui</span><span className="value">+1 cupom de entrada</span></div>}
+        </div>
+        {partial && pendingMonths.length > 0 && (
+          <p className="tiny muted">Saldo parcial: {pendingMonths.map(monthLabel).join(' e ')} ainda {pendingMonths.length > 1 ? 'não foram fechados' : 'não foi fechado'}.</p>
+        )}
+        <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+          <Link to="/cupons" className="btn pink">Meus cupons</Link>
+          {me.profile.rankingAuthorized && <Link to="/cupons/ranking" className="btn secondary"><Trophy size={18} aria-hidden /> Ranking</Link>}
+        </div>
+      </section>
 
       <div className="grid-2">
         <Link to="/conta/pip" className="card fade-in" style={{ textDecoration: 'none', color: 'inherit' }} aria-label={`Minha participação: ${LINK_STATUS_LABEL[pip.headline]}`}>
