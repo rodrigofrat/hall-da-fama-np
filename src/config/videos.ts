@@ -26,7 +26,7 @@ export const VIDEOS: Record<VideoId, VideoInfo> = {
     tabLabel: 'Usar o painel',
     title: 'Como usar o painel',
     description: 'Um tour rápido mostrando onde fica cada coisa: cupons, ranking, sorteios, participação e presentes.',
-    url: (import.meta.env.VITE_VIDEO_PAINEL_URL ?? '').trim() || /* fallbackUrl: */ '',
+    url: (import.meta.env.VITE_VIDEO_PAINEL_URL ?? '').trim() || /* fallbackUrl: */ 'https://youtu.be/UZm7Cj_Wxoc',
   },
   'hall-da-fama': {
     id: 'hall-da-fama',
