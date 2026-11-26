@@ -1,5 +1,4 @@
-import { ChevronRight, Gem, Gift, HeartPulse, Plane, Play, Sparkles, Ticket, Trophy } from 'lucide-react';
-import { VIDEOS } from '../config/videos';
+import { ChevronRight, Gem, Gift, HeartPulse, Plane, Ticket, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { balanceFor, currentCycle } from '../app/selectors';
 import { useCalendar, useMe, useRanking } from '../app/data';
@@ -84,19 +83,6 @@ function Home({ me }: { me: MeData }) {
           </div>
         </div>
       </section>
-
-      <nav className="learn" aria-label="Vídeos de ajuda">
-        <Link to="/videos/painel" className="learn-btn">
-          <span className="play"><Play size={22} fill="currentColor" aria-hidden /></span>
-          <span className="txt"><b>{VIDEOS.painel.buttonLabel}</b><span>Veja onde fica cada coisa no portal</span></span>
-          <ChevronRight aria-hidden />
-        </Link>
-        <Link to="/videos/hall-da-fama" className="learn-btn alt">
-          <span className="play"><Sparkles size={22} aria-hidden /></span>
-          <span className="txt"><b>{VIDEOS['hall-da-fama'].buttonLabel}</b><span>Entenda como o programa funciona</span></span>
-          <ChevronRight aria-hidden />
-        </Link>
-      </nav>
 
       {me.program.staleWarning && <Notice tone="warn">{me.program.staleWarning}</Notice>}
       {me.profile.needsGroupConfirmation && (
