@@ -1,5 +1,5 @@
 import type { CalendarEvent, DrawResult } from '../domain/calendar';
-import type { MonthKey } from '../domain/dates';
+import type { ISODate, MonthKey } from '../domain/dates';
 import type { GiftDelivery, NextGift } from '../domain/gifts';
 import type { RankingRow } from '../domain/ranking';
 import type { LinkStatus, ParticipationCode, PipInfo } from '../domain/status';
@@ -38,6 +38,13 @@ export interface Profile {
   isStaff: boolean;
 }
 
+export interface MonthlyPreview {
+  through: ISODate;
+  diamonds: number;
+  estimatedCoupons: number;
+  next: { coupons: number; diamondsRemaining: number } | null;
+}
+
 export interface MonthlyCoupons {
   month: MonthKey;
   vinculoEntry: MonthKey | null;
@@ -64,6 +71,7 @@ export interface MeData {
   cycles: CycleInfo[];
   balances: CycleBalance[];
   monthly: MonthlyCoupons[];
+  monthlyPreview: MonthlyPreview | null;
   pip: PipInfo | null;
   gifts: { deliveries: GiftDelivery[]; next: NextGift | null };
 }

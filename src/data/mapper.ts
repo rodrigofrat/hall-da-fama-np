@@ -1,4 +1,5 @@
 import type { CalendarEvent, DrawResult, EventStatus, EventType } from '../domain/calendar';
+import { monthOf } from '../domain/dates';
 import type { GiftKind } from '../domain/gifts';
 import type { GiftSituation, LinkStatus, ParticipationCode } from '../domain/status';
 import type { BalanceRow, CreatorRow, CycleRow, DeliveryRow, EventRow, GiftNextRow, MonthlyRow, PipRow, ProgramRow, ResultRow } from './rows';
@@ -29,6 +30,10 @@ export function mapMe(input: {
   next: GiftNextRow | null;
 }): MeData {
   const c = input.creator;
+  const preview = input.link.active ? c?.monthly_preview : null;
+  const previewMonth = preview ? monthOf(preview.through) : null;
+  const currentPreview = preview && previewMonth && previewMonth === input.program.analysisMonth
+    && (!input.program.lastClosedMonth || previewMonth > input.program.lastClosedMonth);
   return {
     program: input.program,
     profile: {
@@ -48,6 +53,7 @@ export function mapMe(input: {
       cycleId: b.cycle_id, accumulated: b.accumulated, eligible: b.eligible, entryBonus: b.entry_bonus,
       participation: b.participation as ParticipationCode, numberRange: b.number_range,
     })),
+    monthlyPreview: currentPreview ? preview : null,
     monthly: [...input.monthly].sort((a, b) => b.month.localeCompare(a.month)).map((m) => ({ month: m.month, vinculoEntry: m.vinculo_entry, coupons: m.coupons, closed: m.closed })),
     pip: input.pip
       ? {

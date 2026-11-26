@@ -1,11 +1,11 @@
-import { ChevronRight, Gift, HeartPulse, Plane, Play, Sparkles, Ticket, Trophy } from 'lucide-react';
+import { ChevronRight, Gem, Gift, HeartPulse, Plane, Play, Sparkles, Ticket, Trophy } from 'lucide-react';
 import { VIDEOS } from '../config/videos';
 import { Link } from 'react-router-dom';
 import { balanceFor, currentCycle } from '../app/selectors';
 import { useCalendar, useMe, useRanking } from '../app/data';
 import { cycleById, isCyclePartial } from '../domain/cycles';
 import { eventTiming, nextDraw, nextDrawSentence } from '../domain/calendar';
-import { monthLabel, monthLabelCap, todayInSaoPaulo } from '../domain/dates';
+import { dateShort, monthLabel, monthLabelCap, monthOf, todayInSaoPaulo } from '../domain/dates';
 import { forecastText, GIFT_KIND_LABEL } from '../domain/gifts';
 import { LINK_STATUS_LABEL, PARTICIPATION_HELP, resolvePipDisplay } from '../domain/status';
 import { formatInt, plural } from '../domain/text';
@@ -42,6 +42,23 @@ function Home({ me }: { me: MeData }) {
         <span className="eyebrow">Hall da Fama</span>
         <h1>Olá, {name || 'criador'}!</h1>
       </header>
+
+      {me.monthlyPreview && (
+        <section className="card hero fade-in" aria-labelledby="diamantes-title">
+          <div className="card-head">
+            <h2 id="diamantes-title"><Gem aria-hidden /> Diamantes no mês</h2>
+            <Pill tone="warn">Prévia</Pill>
+          </div>
+          <p className="big-number">{formatInt(me.monthlyPreview.diamonds)}<small>diamantes</small></p>
+          <p className="small muted">{monthLabelCap(monthOf(me.monthlyPreview.through))} · Dados até {dateShort(me.monthlyPreview.through)}</p>
+          <p><strong>{formatInt(me.monthlyPreview.estimatedCoupons)} {me.monthlyPreview.estimatedCoupons === 1 ? 'cupom estimado' : 'cupons estimados'} no mês</strong></p>
+          {me.monthlyPreview.next ? (
+            <p className="small">Faltam <strong>{formatInt(me.monthlyPreview.next.diamondsRemaining)} diamantes</strong> para chegar a {me.monthlyPreview.next.coupons === 1 ? '1 cupom' : `${me.monthlyPreview.next.coupons} cupons`} no mês.</p>
+          ) : (
+            <p className="small">Limite de cupons do mês atingido.</p>
+          )}
+        </section>
+      )}
 
       <section className="card hero fade-in" aria-labelledby="beneficio-viagens">
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '16px 32px' }}>

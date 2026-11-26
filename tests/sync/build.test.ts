@@ -10,6 +10,29 @@ describe('sincronizador: planilha → snapshot', () => {
   const { payload, issues } = buildSnapshot(fresh().main, fresh().aux);
   const errors = issues.filter((i) => i.severity === 'error');
 
+  it('sincroniza somente a prévia do mês em análise para criadores do Hall', () => {
+    const { main, aux } = fresh();
+    main.tabs['Prévia mensal'] = [
+      [], [], [], [],
+      ['ID do criador', 'Criador', 'Dados até', 'Diamantes no mês', 'Cupons estimados', 'Próxima faixa de cupons', 'Diamantes que faltam', 'Situação'],
+      ['demo_0001', '', '24/11/2026', '900.000', '1', '2', '100.000'],
+      ['demo_0002', '', '24/11/2026', '2.000.000', '4', '', ''],
+      ['demo_0003', '', '24/10/2026', '0', '0', '1', '500.000'],
+      ['fora_do_hall', '', '24/11/2026', '1.500.000', '3', '4', '500.000'],
+    ];
+
+    const result = buildSnapshot(main, aux);
+    expect(result.issues.filter((issue) => issue.severity === 'error')).toEqual([]);
+    expect(result.payload.creators.find((creator) => creator.creator_id === 'demo_0001')?.monthly_preview)
+      .toEqual({ through: '2026-11-24', diamonds: 900000, estimatedCoupons: 1, next: { coupons: 2, diamondsRemaining: 100000 } });
+    expect(result.payload.creators.find((creator) => creator.creator_id === 'demo_0002')?.monthly_preview)
+      .toEqual({ through: '2026-11-24', diamonds: 2000000, estimatedCoupons: 4, next: null });
+    expect(result.payload.creators.find((creator) => creator.creator_id === 'demo_0003')?.monthly_preview).toBeUndefined();
+    expect(result.payload.creators.some((creator) => creator.creator_id === 'fora_do_hall')).toBe(false);
+    expect(result.payload.monthly_coupons).toEqual(payload.monthly_coupons);
+    expect(result.payload.ranking_entries).toEqual(payload.ranking_entries);
+  });
+
   it('carga fictícia válida, sem erros', () => expect(errors).toEqual([]));
 
   it('lê o cenário: análise nov/2026, último fechado out/2026, sorteio jan/2027 sem dia', () => {

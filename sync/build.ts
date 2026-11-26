@@ -3,20 +3,21 @@
  * Funções puras: sem rede, sem banco. Testadas em tests/sync.
  */
 import { createHash } from 'node:crypto';
+import type { MonthlyPreview } from '../src/data/types';
 import { couponsForDiamonds } from '../src/domain/coupons';
 import { cycleById, cycleForDrawMonth, cycleForMonth, isCyclePartial } from '../src/domain/cycles';
-import { parseSheetDate, parseSheetMonth, parseSheetTime, type MonthKey } from '../src/domain/dates';
+import { monthOf, parseSheetDate, parseSheetMonth, parseSheetTime, type MonthKey } from '../src/domain/dates';
 import { dedupeDeliveries, expectedNextGift, referenceKind } from '../src/domain/gifts';
 import { parseBRNumber, parseCreatorId, parseIntBR } from '../src/domain/numbers';
 import { parseGiftSituation, parseLinkStatus, parseParticipation, type LinkStatus } from '../src/domain/status';
 import { displayHandle, norm } from '../src/domain/text';
-import { AUX_TABS, CONFIG_CELLS, HISTORY, MAIN_TABS, cellRef, colIndex, type TabSpec } from './sheet-map';
+import { AUX_TABS, CONFIG_CELLS, HISTORY, MAIN_TABS, MONTHLY_PREVIEW, cellRef, colIndex, type TabSpec } from './sheet-map';
 import { Issues, type Cell, type Grid, type Issue, type Workbook } from './workbook';
 
 export interface SnapshotPayload {
   program_state: { analysis_month: string | null; last_closed_month: string | null; draw_month: string | null; program_start: string | null };
   cycles: { cycle_id: string; label: string; draw_month: string; state: string; ranking_metric: string }[];
-  creators: { creator_id: string; handle: string; display_name: string | null; current_entry_month: string | null; link_status: string; needs_group_confirmation: boolean; in_current_hall: boolean }[];
+  creators: { creator_id: string; handle: string; display_name: string | null; current_entry_month: string | null; link_status: string; needs_group_confirmation: boolean; in_current_hall: boolean; monthly_preview?: MonthlyPreview }[];
   cycle_balances: { creator_id: string; cycle_id: string; accumulated: number | null; eligible: number | null; entry_bonus: number; participation: string; number_range: string | null }[];
   monthly_coupons: { creator_id: string; month: string; vinculo_entry: string | null; coupons: number | null; closed: boolean }[];
   pip_status: { creator_id: string; status: string; reference_month: string | null; recovery_month: string | null; result: string | null; last_confirmed_status: string | null; last_confirmed_month: string | null }[];
@@ -177,6 +178,10 @@ export function buildSnapshot(main: Workbook, aux: Workbook | null): BuildResult
   // ---- Histórico (blocos mensais)
   const history = parseHistory(T[HISTORY.tab], programStart, analysisMonth, issues);
   const currentHallIds = new Set(creators.keys());
+
+  const monthlyPreviews = analysisMonth && !isClosed(analysisMonth)
+    ? readMonthlyPreviews(T[MONTHLY_PREVIEW.tab], analysisMonth, currentHallIds, issues)
+    : new Map<string, MonthlyPreview>();
 
   // ---- Ciclos e saldos
   const balances = new Map<string, SnapshotPayload['cycle_balances'][number]>();
@@ -439,9 +444,14 @@ export function buildSnapshot(main: Workbook, aux: Workbook | null): BuildResult
   const payload: SnapshotPayload = {
     program_state: { analysis_month: analysisMonth, last_closed_month: lastClosedMonth, draw_month: drawMonth, program_start: programStart },
     cycles,
-    creators: [...creators.values()].map(({ cycleCoupons: _c, ...rest }) => ({
-      ...rest, in_current_hall: currentHallIds.has(rest.creator_id),
-    })),
+    creators: [...creators.values()].map(({ cycleCoupons: _c, ...rest }) => {
+      const preview = monthlyPreviews.get(rest.creator_id);
+      return {
+        ...rest,
+        in_current_hall: currentHallIds.has(rest.creator_id),
+        ...(preview ? { monthly_preview: preview } : {}),
+      };
+    }),
     cycle_balances: [...balances.values()],
     monthly_coupons,
     pip_status,
@@ -463,6 +473,44 @@ export function buildSnapshot(main: Workbook, aux: Workbook | null): BuildResult
 
 // ---------------------------------------------------------------- Histórico
 interface HistMonth { month: MonthKey; coupons: number | null; accumulated: number | null; status: LinkStatus | null; vinculo: MonthKey | null }
+function readMonthlyPreviews(grid: Grid | undefined, month: MonthKey, currentHallIds: Set<string>, issues: Issues) {
+  const previews = new Map<string, MonthlyPreview>();
+  if (!grid) return previews;
+  const spec = MONTHLY_PREVIEW;
+  if (!checkHeaders(spec, grid, new Issues())) {
+    issues.warn(spec.tab, null, 'previa_cabecalho', 'Prévia mensal ignorada por cabeçalho inconsistente.');
+    return previews;
+  }
+
+  const seen = new Set<string>();
+  const isWhole = (n: number | null): n is number => n !== null && Number.isSafeInteger(n) && n >= 0;
+  for (const { cells, n } of rowsOf(grid, spec.headerRow)) {
+    const { id } = parseCreatorId(at(cells, 'A'));
+    if (!id || !currentHallIds.has(id) || !text(at(cells, 'C'))) continue;
+    if (seen.has(id)) {
+      previews.delete(id);
+      issues.warn(spec.tab, `A${n}`, 'previa_id_duplicado', 'Prévia mensal ignorada por ID duplicado.');
+      continue;
+    }
+    seen.add(id);
+    const through = parseSheetDate(at(cells, 'C'));
+    const diamonds = parseBRNumber(at(cells, 'D'));
+    const estimatedCoupons = parseBRNumber(at(cells, 'E'));
+    const nextCoupons = parseBRNumber(at(cells, 'F'));
+    const diamondsRemaining = parseBRNumber(at(cells, 'G'));
+    const atLimit = !text(at(cells, 'F')) && !text(at(cells, 'G'));
+    const next = isWhole(nextCoupons) && isWhole(diamondsRemaining) && diamondsRemaining > 0
+      && isWhole(estimatedCoupons) && nextCoupons === estimatedCoupons + 1
+      ? { coupons: nextCoupons, diamondsRemaining } : null;
+    if (!through || monthOf(through) !== month || !isWhole(diamonds) || !isWhole(estimatedCoupons) || (!atLimit && !next)) {
+      issues.warn(spec.tab, `C${n}`, 'previa_invalida', 'Prévia mensal ignorada por data ou meta inconsistente.');
+      continue;
+    }
+    previews.set(id, { through, diamonds, estimatedCoupons, next });
+  }
+  return previews;
+}
+
 function parseHistory(grid: Grid | undefined, programStart: MonthKey | null, analysisMonth: MonthKey | null, issues: Issues) {
   const out = new Map<string, { handle: string; months: HistMonth[]; cycleAccumulated: Map<string, number> }>();
   if (!grid || grid.length < HISTORY.firstDataRow) {

@@ -68,7 +68,7 @@ export class SupabaseData implements PortalData {
     if (!p) throw new Error('Os dados do Hall ainda não foram publicados. Tente novamente mais tarde.');
 
     const [creator, cycles, balances, monthly, pip, deliveries, next] = await Promise.all([
-      db.from('creators').select('creator_id, handle, display_name, current_entry_month, link_status, needs_group_confirmation').eq('creator_id', creatorId).maybeSingle(),
+      db.from('creators').select('creator_id, handle, display_name, current_entry_month, link_status, needs_group_confirmation, monthly_preview').eq('creator_id', creatorId).maybeSingle(),
       db.from('cycles').select('cycle_id, label, draw_month, state, ranking_metric'),
       db.from('cycle_balances').select('creator_id, cycle_id, accumulated, eligible, entry_bonus, participation, number_range').eq('creator_id', creatorId),
       db.from('monthly_coupons').select('creator_id, month, vinculo_entry, coupons, closed').eq('creator_id', creatorId).order('month', { ascending: false }).limit(60),

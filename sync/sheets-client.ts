@@ -1,5 +1,5 @@
 import { google } from 'googleapis';
-import { AUX_TABS, CONFIG_CELLS, HISTORY, MAIN_TABS, colIndex } from './sheet-map';
+import { AUX_TABS, CONFIG_CELLS, HISTORY, MAIN_TABS, MONTHLY_PREVIEW, colIndex } from './sheet-map';
 import { mergeColumnRanges, type Grid, type Workbook } from './workbook';
 
 /**
@@ -22,6 +22,14 @@ export async function readWorkbooks(opts: { credentialsJson: string; mainId: str
   }
   requests.push({ key: CONFIG_CELLS.tab, range: q(CONFIG_CELLS.tab, CONFIG_CELLS.range), startCol: 0 });
   requests.push({ key: HISTORY.tab, range: q(HISTORY.tab, HISTORY.range), startCol: 0 });
+
+  const mainMeta = await sheets.spreadsheets.get({
+    spreadsheetId: opts.mainId,
+    fields: 'sheets.properties.title',
+  });
+  if (mainMeta.data.sheets?.some((s) => s.properties?.title === MONTHLY_PREVIEW.tab)) {
+    requests.push({ key: MONTHLY_PREVIEW.tab, range: q(MONTHLY_PREVIEW.tab, MONTHLY_PREVIEW.ranges[0]), startCol: 0 });
+  }
 
   const res = await sheets.spreadsheets.values.batchGet({
     spreadsheetId: opts.mainId,

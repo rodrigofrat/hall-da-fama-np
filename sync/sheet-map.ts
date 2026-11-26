@@ -101,6 +101,21 @@ export const MAIN_TABS = {
   },
 } satisfies Record<string, TabSpec>;
 
+/** Dados calculados da prévia. A área de colagem a partir de K fica fora da leitura. */
+export const MONTHLY_PREVIEW: TabSpec = {
+  tab: 'Prévia mensal',
+  ranges: ['A1:H1005'],
+  headerRow: 5,
+  columns: {
+    id: { col: 'A', expect: ['id'] },
+    through: { col: 'C', expect: ['dados ate'] },
+    diamonds: { col: 'D', expect: ['diamantes no mes'] },
+    estimatedCoupons: { col: 'E', expect: ['cupons estimados'] },
+    nextCoupons: { col: 'F', expect: ['proxima faixa'] },
+    diamondsRemaining: { col: 'G', expect: ['diamantes que faltam'] },
+  },
+};
+
 /** Células avulsas de Configurações. */
 export const CONFIG_CELLS = {
   tab: 'Configurações',
